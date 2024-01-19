@@ -1,7 +1,7 @@
 # Default compiler and flags
 CC ?= gcc
-CFLAGS ?= -march=native -g3 -fopenmp -I~/openmp_install/include
-LFLAGS ?= -lm -L~/openmp_install/lib
+CFLAGS ?= -march=native -g3 -fopenmp
+LFLAGS ?= -lm
 OFLAGS ?= -O0 -fopt-info-all=nbody.gcc.optrpt
 
 # Check if the compiler is clang, if so, add -lomp to LFLAGS
@@ -12,7 +12,7 @@ endif
 all: nbody3D
 
 nbody3D: nbody.c
-    $(CC) $(CFLAGS) $(OFLAGS) $< -o $@ $(LFLAGS)
+	$(CC) $(CFLAGS) $(OFLAGS) $< -o $@ $(LFLAGS)
 
 clean:
-    rm -Rf *~ nbody3D *.optrpt
+	rm -Rf *~ nbody3D *.optrpt

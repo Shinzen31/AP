@@ -143,6 +143,18 @@ void move_particles_opt(particle_t *p, const f32 dt, u64 n)
   }
 }
   
+f64 compute_delta_particle(particle_t *p_ref, particle_t *p, u64 n) { 
+  f64 delta_pos = 0.0;
+  f64 delta_vel = 0.0;
+
+  for (u64 i = 0; i < n; i++) {
+    delta_pos += sqrt(pow(p_ref[i].x - p[i].x, 2) + pow(p_ref[i].y - p[i].y, 2) + pow(p_ref[i].z - p[i].z, 2));
+    delta_vel += sqrt(pow(p_ref[i].vx - p[i].vx, 2) + pow(p_ref[i].vy - p[i].vy, 2) + pow(p_ref[i].vz - p[i].vz, 2));
+  }
+
+  return (delta_pos + delta_vel) / (f64)(2 * n);
+}
+
 //
 
 int main(int argc, char **argv)
@@ -237,8 +249,11 @@ int main(int argc, char **argv)
     printf("\033[1mStandard Version Performance: \033[0m%10.1lf +- %.1lf GFLOP/s\n", rate_std, drate_std);
     printf("\033[1mOptimized Version Performance: \033[0m%10.1lf +- %.1lf GFLOP/s\n", rate_opt, drate_opt);
     printf("-----------------------------------------------------\n");
+    f64 delta = compute_delta_particle(p, p_opt, n);
+    printf("Delta between standard and optimized versions: %f\n", delta);
 
 
+    
 
     return 0;
 }
